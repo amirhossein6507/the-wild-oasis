@@ -1,6 +1,10 @@
-import { getCabin } from "@/app/_lib/data-service";
+import Reservation from "@/app/_components/Reservation";
+import Spinner from "@/app/_components/Spinner";
+import TextExpander from "@/app/_components/TextExpander";
+import { getCabin, getCabins } from "@/app/_lib/data-service";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
+import { Suspense } from "react";
 
 // export const metadata = {
 //   title: "Cabin",
@@ -13,6 +17,16 @@ export const generateMetadata = async ({ params }) => {
   return {
     title: `Cabin ${name}`,
   };
+};
+
+export const generateStaticParams = async () => {
+  const cabins = await getCabins();
+
+  const ids = cabins.map((cabin) => {
+    return { cabinId: String(cabin.id) };
+  });
+
+  return ids;
 };
 
 export default async function Page({ params }) {
@@ -46,7 +60,9 @@ export default async function Page({ params }) {
             Cabin {name}
           </h3>
 
-          <p className="text-primary-300 mb-10 text-lg">{description}</p>
+          <p className="text-primary-300 mb-10 text-lg">
+            <TextExpander>{description}</TextExpander>
+          </p>
 
           <ul className="mb-7 flex flex-col gap-4">
             <li className="flex items-center gap-3">
@@ -74,9 +90,13 @@ export default async function Page({ params }) {
       </div>
 
       <div>
-        <h2 className="text-center text-5xl font-semibold">
-          Reserve today. Pay on arrival.
+        <h2 className="text-accent-400 mb-8 text-center text-5xl font-semibold">
+          Reserve {cabin.name} today. Pay on arrival.
         </h2>
+
+        <Suspense fallback={<Spinner />}>
+          <Reservation cabin={cabin} />
+        </Suspense>
       </div>
     </div>
   );

@@ -1,11 +1,18 @@
 import Image from "next/image";
 import image1 from "@/public/about-1.jpg";
+import Link from "next/link";
+import { getCabins } from "../_lib/data-service";
+
+export const revalidate = 86400;
 
 export const metadata = {
   title: "About",
 };
 
-function Page() {
+async function Page() {
+  const cabins = await getCabins();
+  const cabinsLength = cabins.length;
+
   return (
     <div className="grid grid-cols-5 items-center gap-x-24 gap-y-32 text-lg">
       <div className="col-span-3">
@@ -22,10 +29,11 @@ function Page() {
             and enjoying simple pleasures with family.
           </p>
           <p>
-            Our 8 luxury cabins provide a cozy base, but the real freedom and
-            peace you&lsquo;ll find in the surrounding mountains. Wander through
-            lush forests, breathe in the fresh air, and watch the stars twinkle
-            above from the warmth of a campfire or your hot tub.
+            Our {`${cabins.length} `} luxury cabins provide a cozy base, but the
+            real freedom and peace you&lsquo;ll find in the surrounding
+            mountains. Wander through lush forests, breathe in the fresh air,
+            and watch the stars twinkle above from the warmth of a campfire or
+            your hot tub.
           </p>
           <p>
             This is where memorable moments are made, surrounded by
@@ -43,7 +51,6 @@ function Page() {
           alt="Family sitting around a fire pit in front of cabin"
         />
       </div>
-
       <div className="relative col-span-2 aspect-square">
         <Image
           src="/about-2.jpg"
@@ -52,7 +59,6 @@ function Page() {
           alt="Family that manages The Wild Oasis"
         />
       </div>
-
       <div className="col-span-3">
         <h1 className="text-accent-400 mb-10 text-4xl font-medium">
           Managed by our family since 1962
@@ -75,12 +81,12 @@ function Page() {
           </p>
 
           <div>
-            <a
+            <Link
               href="/cabins"
               className="bg-accent-500 text-primary-800 hover:bg-accent-600 mt-4 inline-block px-8 py-5 text-lg font-semibold transition-all"
             >
               Explore our luxury cabins
-            </a>
+            </Link>
           </div>
         </div>
       </div>
