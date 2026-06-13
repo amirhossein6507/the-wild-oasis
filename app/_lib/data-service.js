@@ -80,10 +80,10 @@ export async function getBooking(id) {
 
 export async function getBookings(guestId) {
   const { data, error, count } = await supabase
-    .from("bookings")
+    .from("Bookings")
     // We actually also need data on the cabins as well. But let's ONLY take the data that we actually need, in order to reduce downloaded data.
     .select(
-      "id, created_at, startDate, endDate, numNights, numGuests, totalPrice, guestId, cabinId, cabins(name, image)",
+      "id, created_at, startDate, endDate, numNights, numGuests, totalPrice, guestId, cabinId, Cabins(name, imageCabin)",
     )
     .eq("guestId", guestId)
     .order("startDate");
@@ -185,8 +185,8 @@ export async function createBooking(newBooking) {
 
 /////////////
 // UPDATE
-
 // The updatedFields is an object which should ONLY contain the updated data
+/*
 export async function updateGuest(id, updatedFields) {
   const { data, error } = await supabase
     .from("Guests")
@@ -229,3 +229,4 @@ export async function deleteBooking(id) {
   }
   return data;
 }
+*/

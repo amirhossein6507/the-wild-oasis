@@ -6,7 +6,7 @@ async function SelectCountry({ defaultCountry, name, id, className }) {
   const countries = await getCountries();
   const flag =
     countries.find((country) => country.names.common === defaultCountry)?.flag
-      .emoji ?? "";
+      .url_svg ?? "";
 
   return (
     <select
@@ -18,7 +18,10 @@ async function SelectCountry({ defaultCountry, name, id, className }) {
     >
       <option value="">Select country...</option>
       {countries.map((c) => (
-        <option key={c.names.common} value={`${c.name}%${c.flag}`}>
+        <option
+          key={c.names.common}
+          value={`${c.names.common}%${c.flag.url_svg}`}
+        >
           {c.names.common}
         </option>
       ))}
